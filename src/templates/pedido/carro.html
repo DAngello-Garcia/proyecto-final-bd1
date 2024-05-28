@@ -1,0 +1,35 @@
+<div class="container mt-5">
+    <h1 class="text-center">Welcome to the Bookstore</h1>
+    <form action="/add_to_cart" method="post" class="mt-4">
+        <div class="form-group">
+            <label for="book_id">Book ID:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-book"></i></span>
+                </div>
+                <input type="text" class="form-control" id="book_id" name="book_id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-sort-numeric-up"></i></span>
+                </div>
+                <input type="number" class="form-control" id="quantity" name="quantity" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus"></i> Add to Cart</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info mt-4">
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+</div>

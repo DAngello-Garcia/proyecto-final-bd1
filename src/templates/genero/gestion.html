@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Géneros
+{% endblock %}
+
+{% block content %}
+
+<h2>Lista de Géneros</h2>
+<div class="card-deck">
+    {% for genero in generos %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('genero.gestion_genero', genero_id=genero[0]) }}">
+                    {{genero[1]}}</a>
+            </h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<br>
+<h2>Crear Género</h2>
+<div class="container">
+    <form action="/crear_genero" method="POST" onsubmit="return validarFormulario()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" name="nombre" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary" type="submit">Crear género</button>
+        </div>
+    </form>
+</div>
+<br><br>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: 'nombre', tipo: 'string' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

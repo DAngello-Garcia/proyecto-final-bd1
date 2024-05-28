@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - {{ genero[1] }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="{{ url_for('genero.actualizar', id_genero=genero[0]) }}" method="POST"
+        onsubmit="return validarFormulario()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" name="nombre" value="{{ genero[1] }}" required>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Actualizar</button>
+    </form>
+    <div style="height: 5px;"></div>
+    <form action="{{ url_for('genero.eliminar', id_genero=genero[0]) }}" method="POST">
+        <input type="submit" value="Eliminar" class="btn btn-danger"
+            onclick="return confirm('¿Estás seguro de que deseas eliminar este género?');">
+    </form>
+</div>
+<br><br>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: 'nombre', tipo: 'string' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

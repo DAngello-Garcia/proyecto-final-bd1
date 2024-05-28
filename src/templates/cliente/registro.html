@@ -1,0 +1,100 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Registro
+{% endblock %}
+
+{% block content %}
+<h1>Registro</h1>
+<div class="container mt-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="/registro" method="POST" onsubmit="return validarFormulario()">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_ciudad">Ciudad</label>
+                    <select class="form-control" id="id_ciudad" name="id_ciudad" required>
+                        {{ciudades | safe}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: "nombre", tipo: "string" },
+            { id: "apellido", tipo: "string" },
+            { id: "fecha_nacimiento", tipo: "string" }, // Tipo de dato correcto en HTML5 es "string"
+            { id: "direccion", tipo: "string" },
+            { id: "telefono", tipo: "string" }, // Tipo de dato correcto en HTML5 es "string"
+            { id: "id_ciudad", tipo: "number" },
+            { id: "username", tipo: "string" },
+            { id: "email", tipo: "email" }, // Tipo de dato correcto en HTML5 es "email"
+            { id: "password", tipo: "string" }
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            } else if (tipo === "string" && campo.id === "telefono" && !validarTelefono(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            } else if (tipo === "email" && !validarEmail(valor)) {
+                alert("Por favor, ingrese un email válido.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function validarTelefono(telefono) {
+        var regex = /^[0-9]+$/;
+        return regex.test(telefono);
+    }
+
+    function validarEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+</script>
+{% endblock %}

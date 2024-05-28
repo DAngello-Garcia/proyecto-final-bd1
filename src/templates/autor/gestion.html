@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Gestión de autores
+{% endblock %}
+
+{% block content %}
+<h2>Lista de Autores</h2>
+<div class="card-deck">
+    {% for autor in autores %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('autor.gestion_autor', autor_id=autor[0]) }}">{{
+                    autor[1] }} {{autor[3] }}</a>
+            </h5>
+            <p class="card-text">{{ autor[2] }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h1>Crear autor</h1>
+<div class="container mt-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{{ url_for('autor.crear')}}" method="POST" onsubmit="return validarFormulario()">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha_defuncion">Fecha de defunción:</label>
+                    <input type="date" class="form-control" id="fecha_defuncion" name="fecha_defuncion">
+                </div>
+                <div class="form-group">
+                    <label for="biografia">Biografía:</label>
+                    <textarea class="form-control" id="biografia" name="biografia" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_pais">País</label>
+                    <select class="form-control" id="id_pais" name="id_pais" required>
+                        {{paises | safe}}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: "nombre", tipo: "string" },
+            { id: "apellido", tipo: "string" },
+            { id: "fecha_nacimiento", tipo: "string" }, // Tipo de dato correcto en HTML5 es "string"
+            { id: "biografia", tipo: "string" },
+            { id: 'id_pais', tipo: 'number' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Perfil
+{% endblock %}
+
+{% block content %}
+<h1>Perfil</h1>
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+<div class="container mt-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{{ url_for('cliente.editar', id_cliente=cliente[8]) }}" method="POST"
+                onsubmit="return validarFormulario()">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" name="nombre" required value="{{ cliente[0] }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input class="form-control" type="text" id="apellido" name="apellido" required
+                        value="{{ cliente[1] }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                    <input class="form-control" type="date" id="fecha_nacimiento" name="fecha_nacimiento" required
+                        value="{{ cliente[2] }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    <input class="form-control" type="text" id="direccion" name="direccion" required
+                        value="{{ cliente[3] }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input class="form-control" type="tel" id="telefono" name="telefono" required
+                        value="{{ cliente[4] }}">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="id_ciudad">Ciudad:</label>
+                        <select class="form-control" id="id_ciudad" name="id_ciudad" required>
+                            {% for ciudad, id_ciudad in ciudades %}
+                            {% if id_ciudad == ciudad_cliente %}
+                            <option value="{{ id_ciudad }}" selected>{{ ciudad }}</option>
+                            {% else %}
+                            <option value="{{ id_ciudad }}">{{ ciudad }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Nombre de Usuario:</label>
+                        <input class="form-control" type="text" id="username" name="username" required
+                            value="{{ cliente[6] }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico:</label>
+                        <input class="form-control" type="email" id="email" name="email" required
+                            value="{{ cliente[7] }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+            <div style="height: 5px;"></div>
+            <form action="{{ url_for('cliente.eliminar', id_cliente=cliente[8]) }}" method="POST">
+                <input type="submit" value="Eliminar" class="btn btn-danger"
+                    onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: "nombre", tipo: "string" },
+            { id: "apellido", tipo: "string" },
+            { id: "fecha_nacimiento", tipo: "string" }, // Tipo de dato correcto en HTML5 es "string"
+            { id: "direccion", tipo: "string" },
+            { id: "telefono", tipo: "string" }, // Tipo de dato correcto en HTML5 es "string"
+            { id: "id_ciudad", tipo: "number" },
+            { id: "username", tipo: "string" },
+            { id: "email", tipo: "email" }, // Tipo de dato correcto en HTML5 es "email"
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            } else if (tipo === "string" && campo.id === "telefono" && !validarTelefono(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            } else if (tipo === "email" && !validarEmail(valor)) {
+                alert("Por favor, ingrese un email válido.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function validarTelefono(telefono) {
+        var regex = /^[0-9]+$/;
+        return regex.test(telefono);
+    }
+
+    function validarEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+</script>
+{% endblock %}

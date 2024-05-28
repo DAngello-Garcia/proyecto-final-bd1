@@ -1,0 +1,182 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - {{ libro[1] }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="{{ url_for('libro.actualizar', id_libro=libro[0]) }}" method="POST"
+        onsubmit="return validarFormulario()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input class="form-control" type="text" id="titulo" name="titulo" value="{{ libro[1] }}" required>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="autor">Autor:</label>
+                    <input class="form-control" type="text" id="titulo" name="titulo"
+                        value="{{ libro[15] }} {{libro[16] }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_publicacion">Año de publicación:</label>
+                    <input class="form-control" type="number" id="fecha_publicacion" name="fecha_publicacion"
+                        value="{{ libro[3] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_publicacion">ISBN:</label>
+                    <input class="form-control" type="number" id="isbn" name="isbn" value="{{ libro[2] }}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="editorial">Editorial:</label>
+                    <select class="form-control" id="editorial" name="editorial" required>
+                        {{editoriales | safe}}
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input class="form-control" type="number" id="precio" name="precio" value="{{ libro[5] }}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="cantidad_disponible">Cantidad disponible:</label>
+                    <input class="form-control" type="number" id="cantidad_disponible" name="cantidad_disponible"
+                        value="{{ libro[6] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="numero_paginas">Número de páginas:</label>
+                    <input class="form-control" type="number" id="numero_paginas" name="numero_paginas"
+                        value="{{ libro[8] }}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="sinopsis">Sinopsis:</label>
+                    <textarea class="form-control" id="sinopsis" name="sinopsis" required>{{ libro[7] }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="idioma">Idioma:</label>
+                    <input class="form-control" type="text" id="idioma" name="idioma" value="{{ libro[9] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="peso">Peso:</label>
+                    <input class="form-control" type="number" id="peso" name="peso" value="{{ libro[10] }}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h5>Dimensiones:</h5>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="altoalto">Alto:</label>
+                    <input class="form-control" type="number" id="alto" name="alto" value="{{ libro[11] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="ancho">Ancho:</label>
+                    <input class="form-control" type="number" id="ancho" name="ancho" value="{{ libro[12] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="largo">Largo:</label>
+                    <input class="form-control" type="number" id="largo" name="largo" value="{{ libro[13] }}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="presentacion">Presentación:</label>
+                    <select class="form-control" id="presentacion" name="presentacion" required>
+                        {{presentaciones | safe}}
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="id_genero">Género:</label>
+                    <select class="form-control" id="id_genero" name="id_genero" required>
+                        {{generos_select | safe}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Actualizar</button>
+    </form>
+    <div style="height: 5px;"></div>
+    <form action="{{ url_for('libro.eliminar', id_libro=libro[0]) }}" method="POST">
+        <input type="submit" value="Eliminar" class="btn btn-danger"
+            onclick="return confirm('¿Estás seguro de que deseas eliminar este libro?');">
+    </form>
+</div>
+<br><br>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: 'titulo', tipo: 'string' },
+            { id: 'id_autor', tipo: 'number' },
+            { id: 'fecha_publicacion', tipo: 'string' },
+            { id: 'isbn', tipo: 'number' },
+            { id: 'id_editorial', tipo: 'number' },
+            { id: 'precio', tipo: 'number' },
+            { id: 'cantidad_disponible', tipo: 'number' },
+            { id: 'numero_paginas', tipo: 'number' },
+            { id: 'sinopsis', tipo: 'string' },
+            { id: 'idioma', tipo: 'string' },
+            { id: 'peso', tipo: 'number' },
+            { id: 'alto', tipo: 'number' },
+            { id: 'ancho', tipo: 'number' },
+            { id: 'largo', tipo: 'number' },
+            { id: 'id_presentacion', tipo: 'number' },
+            { id: 'id_genero', tipo: 'number' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

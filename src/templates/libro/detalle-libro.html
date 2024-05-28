@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - {{ libro[1] }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="card-body">
+                    <h5 class="card-title">{{ libro[1] }}</h5>
+                    <p class="card-text"><strong>Autor:</strong> {{ libro[15] }} {{
+                        libro[16] }}</p>
+                    <p class="card-text"><strong>Fecha de Publicación:</strong> {{ libro[3] }}</p>
+                    <p class="card-text"><strong>Editorial:</strong> {{ libro[4] }}</p>
+                    <p class="card-text"><strong>Precio:</strong> ${{ libro[5] }}</p>
+                    <p class="card-text"><strong>Cantidad Disponible:</strong> {{ libro[6] }}</p>
+                    <p class="card-text"><strong>Número de Páginas:</strong> {{ libro[8] }}</p>
+                    <p class="card-text"><strong>Idioma:</strong> {{ libro[9] }}</p>
+                    <p class="card-text"><strong>ISBN:</strong> {{ libro[2] }}</p>
+                    <p class="card-text"><strong>Peso:</strong> {{ libro[10] }}</p>
+                    <p class="card-text"><strong>Dimensiones:</strong> {{ libro[11] }}x{{ libro[12] }}x{{ libro[13] }}
+                        (AltoxAnchoxLargo)</p>
+                    <p class="card-text"><strong>Géneros:</strong> {{ libro[14] }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <h2 class="mt-1 mb-1">{{ libro[1] }}</h2>
+                <h3 class="py-3">{{ libro[15] }} {{
+                    libro[16] }} - {{
+                    libro[4] }} - {{ libro[17] }}</h3>
+                <h3 class="py-3">${{ libro[5] }}</h3>
+            </div>
+            <div class="row">
+                {% if not session['cliente'] %}
+                <form action="{{ url_for('auth.login') }}" method="GET">
+                    <button type="submit" class="btn btn-success">Añadir al carrito</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('pedido.pedir') }}?id_libro={{ libro[0] }}&id_cliente={{ session['cliente'] }}"
+                    method="POST">
+                    <button type="submit" class="btn btn-success">Añadir al carrito</button>
+                </form>
+                {% endif %}
+            </div>
+            <div class="row">
+                <p class="card-text"><strong>Géneros:</strong> {{ libro[14] }}</p>
+                <p class="py-3">{{ libro[7] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

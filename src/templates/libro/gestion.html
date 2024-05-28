@@ -1,0 +1,194 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Libros
+{% endblock %}
+
+{% block content %}
+
+<h2>Lista de Libros</h2>
+<div class="card-deck">
+    {% for libro in libros %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('libro.gestion_libro', libro_id=libro[0]) }}">{{
+                    libro[1].encode("latin1").decode("utf-8") }}</a>
+            </h5>
+            <p class="card-text">{{ libro[3].encode("latin1").decode("utf-8") }}</p>
+            <p class="card-text"><small class="text-muted">${{ libro[2] }}</small></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<br>
+<h2>Crear libro</h2>
+<div class="container">
+    <form action="/crear_libro" method="POST" onsubmit="return validarFormulario()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input class="form-control" type="text" id="titulo" name="titulo" required>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="autor">Autor:</label>
+                    <select class="form-control" id="autor" name="autor" required>
+                        {{autores | safe}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_publicacion">Año de publicación:</label>
+                    <input class="form-control" type="number" id="fecha_publicacion" name="fecha_publicacion" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_publicacion">ISBN:</label>
+                    <input class="form-control" type="number" id="isbn" name="isbn" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="editorial">Editorial:</label>
+                    <select class="form-control" id="editorial" name="editorial" required>
+                        {{editoriales | safe}}
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input class="form-control" type="number" id="precio" name="precio" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="cantidad_disponible">Cantidad disponible:</label>
+                    <input class="form-control" type="number" id="cantidad_disponible" name="cantidad_disponible"
+                        required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="numero_paginas">Número de páginas:</label>
+                    <input class="form-control" type="number" id="numero_paginas" name="numero_paginas" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="sinopsis">Sinopsis:</label>
+                    <textarea class="form-control" id="sinopsis" name="sinopsis" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="idioma">Idioma:</label>
+                    <input class="form-control" type="text" id="idioma" name="idioma" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="peso">Peso:</label>
+                    <input class="form-control" type="number" id="peso" name="peso" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h5>Dimensiones:</h5>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="altoalto">Alto:</label>
+                    <input class="form-control" type="number" id="alto" name="alto" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="ancho">Ancho:</label>
+                    <input class="form-control" type="number" id="ancho" name="ancho" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="largo">Largo:</label>
+                    <input class="form-control" type="number" id="largo" name="largo" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="presentacion">Presentación:</label>
+                    <select class="form-control" id="presentacion" name="presentacion" required>
+                        {{presentaciones | safe}}
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="id_genero">Género:</label>
+                    <select class="form-control" id="id_genero" name="id_genero" required>
+                        {{generos_select | safe}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary" type="submit">Crear Libro</button>
+        </div>
+    </form>
+</div>
+<br><br>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: 'titulo', tipo: 'string' },
+            { id: 'id_autor', tipo: 'number' },
+            { id: 'fecha_publicacion', tipo: 'string' },
+            { id: 'isbn', tipo: 'number' },
+            { id: 'id_editorial', tipo: 'number' },
+            { id: 'precio', tipo: 'number' },
+            { id: 'cantidad_disponible', tipo: 'number' },
+            { id: 'numero_paginas', tipo: 'number' },
+            { id: 'sinopsis', tipo: 'string' },
+            { id: 'idioma', tipo: 'string' },
+            { id: 'peso', tipo: 'number' },
+            { id: 'alto', tipo: 'number' },
+            { id: 'ancho', tipo: 'number' },
+            { id: 'largo', tipo: 'number' },
+            { id: 'id_presentacion', tipo: 'number' },
+            { id: 'id_genero', tipo: 'number' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

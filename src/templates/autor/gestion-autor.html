@@ -1,0 +1,94 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - {{ autor[1] }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="{{ url_for('autor.actualizar', id_autor=autor[0]) }}" method="POST"
+        onsubmit="return validarFormulario()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" name="nombre" value="{{ autor[1] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input class="form-control" type="text" id="apellido" name="apellido" value="{{ autor[2] }}"
+                        required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                    <input class="form-control" type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                        value="{{ autor[3] }}" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="fecha_defuncion">Fecha de defunción:</label>
+                    <input class="form-control" type="date" id="fecha_defuncion" name="fecha_defuncion"
+                        value="{{ autor[4] }}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="biografia">Biografía:</label>
+                    <textarea class="form-control" id="biografia" name="biografia" required>{{ autor[5] }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="id_pais">País:</label>
+                    <select class="form-control" id="id_pais" name="id_pais" required>
+                        {{paises | safe}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Actualizar</button>
+    </form>
+    <div style="height: 5px;"></div>
+    <form action="{{ url_for('autor.eliminar', id_autor=autor[0]) }}" method="POST">
+        <input type="submit" value="Eliminar" class="btn btn-danger"
+            onclick="return confirm('¿Estás seguro de que deseas eliminar este autor?');">
+    </form>
+</div>
+<br><br>
+<script>
+    function validarFormulario() {
+        var campos = [
+            { id: 'nombre', tipo: 'string' },
+            { id: 'apellido', tipo: 'string' },
+            { id: 'fecha_nacimiento', tipo: 'string' },
+            { id: 'biografia', tipo: 'string' },
+            { id: 'id_pais', tipo: 'number' },
+        ];
+
+        for (var i = 0; i < campos.length; i++) {
+            var campo = campos[i];
+            var valor = document.getElementById(campo.id).value;
+            var tipo = campo.tipo;
+            // Validar el tipo de dato
+            if (tipo === "number" && isNaN(valor)) {
+                alert("El campo " + campo.id + " debe ser un número.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

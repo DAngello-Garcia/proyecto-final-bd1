@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }} - Libros
+{% endblock %}
+
+{% block content %}
+
+<h2>Lista de Libros</h2>
+<div class="card-deck">
+    {% for libro in libros %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('libro.detalle_libro', libro_id=libro[0]) }}">{{
+                    libro[1].encode("latin1").decode("utf-8") }}</a>
+            </h5>
+            <p class="card-text">{{ libro[3].encode("latin1").decode("utf-8") }}</p>
+            <p class="card-text"><small class="text-muted">${{ libro[2] }}</small></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

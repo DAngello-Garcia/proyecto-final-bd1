@@ -18,7 +18,17 @@ id_todos_generos: list[str] = []
 def detalle_libro(libro_id: int):
     db = get_db_connection()
     cursor = db.cursor(buffered=True)
-    query = """SELECT l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, GROUP_CONCAT(g.nombre) AS generos, a.nombre, a.apellido, p.presentacion FROM Libro l JOIN Editorial e ON l.id_editorial = e.idEditorial JOIN Dimensiones d ON l.id_dimensiones = d.idDimensiones JOIN LibroGenero lg ON l.idLibro = lg.id_libro JOIN Genero g ON lg.id_genero = g.idGenero JOIN AutorLibro al ON al.id_libro = l.idLibro JOIN Autor a ON al.id_autor = a.idAutor JOIN LibroPresentacion lp ON lp.id_libro = l.idLibro JOIN Presentacion p ON p.idPresentacion = lp.id_presentacion WHERE l.idLibro = %s GROUP BY l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, a.nombre, a.apellido, p.presentacion"""
+    query = """SELECT l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, GROUP_CONCAT(g.nombre) AS generos, a.nombre, a.apellido, p.presentacion
+        FROM Libro l JOIN Editorial e ON l.id_editorial = e.idEditorial
+        JOIN Dimensiones d ON l.id_dimensiones = d.idDimensiones
+        JOIN LibroGenero lg ON l.idLibro = lg.id_libro
+        JOIN Genero g ON lg.id_genero = g.idGenero
+        JOIN AutorLibro al ON al.id_libro = l.idLibro
+        JOIN Autor a ON al.id_autor = a.idAutor
+        JOIN LibroPresentacion lp ON lp.id_libro = l.idLibro
+        JOIN Presentacion p ON p.idPresentacion = lp.id_presentacion
+        WHERE l.idLibro = %s
+        GROUP BY l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, a.nombre, a.apellido, p.presentacion"""
     values = (libro_id,)
     cursor.execute(query, values)
     libro = cursor.fetchone()
@@ -187,7 +197,17 @@ def gestion_libro(libro_id: int):
         for label, value in zip(todos_generos, id_todos_generos)
     )
     cursor = db.cursor(buffered=True)
-    query = """SELECT l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, GROUP_CONCAT(g.nombre) AS generos, a.nombre, a.apellido, p.presentacion FROM Libro l JOIN Editorial e ON l.id_editorial = e.idEditorial JOIN Dimensiones d ON l.id_dimensiones = d.idDimensiones JOIN LibroGenero lg ON l.idLibro = lg.id_libro JOIN Genero g ON lg.id_genero = g.idGenero JOIN AutorLibro al ON al.id_libro = l.idLibro JOIN Autor a ON al.id_autor = a.idAutor JOIN LibroPresentacion lp ON lp.id_libro = l.idLibro JOIN Presentacion p ON p.idPresentacion = lp.id_presentacion WHERE l.idLibro = %s GROUP BY l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, a.nombre, a.apellido, p.presentacion"""
+    query = """SELECT l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, GROUP_CONCAT(g.nombre) AS generos, a.nombre, a.apellido, p.presentacion
+        FROM Libro l JOIN Editorial e ON l.id_editorial = e.idEditorial
+        JOIN Dimensiones d ON l.id_dimensiones = d.idDimensiones
+        JOIN LibroGenero lg ON l.idLibro = lg.id_libro
+        JOIN Genero g ON lg.id_genero = g.idGenero
+        JOIN AutorLibro al ON al.id_libro = l.idLibro
+        JOIN Autor a ON al.id_autor = a.idAutor
+        JOIN LibroPresentacion lp ON lp.id_libro = l.idLibro
+        JOIN Presentacion p ON p.idPresentacion = lp.id_presentacion
+        WHERE l.idLibro = %s
+        GROUP BY l.idLibro, l.titulo, l.ISBN, l.fecha_publicacion, e.nombre, l.precio, l.cantidad_disponible, l.sinopsis, l.numero_paginas, l.idioma, l.peso, d.alto, d.ancho, d.largo, a.nombre, a.apellido, p.presentacion"""
     values = (libro_id,)
     cursor.execute(query, values)
     libro = cursor.fetchone()
@@ -253,7 +273,10 @@ def buscar_libro():
 def buscar_genero(genero_id: int):
     db = get_db_connection()
     cursor = db.cursor(buffered=True)
-    query = """SELECT l.idLibro, l.titulo, l.precio, l.sinopsis FROM Libro l JOIN LibroGenero lg ON l.idLibro = lg.id_libro JOIN Genero g ON lg.id_genero = g.idGenero WHERE l.cantidad_disponible > 0 AND g.idGenero = %s"""
+    query = """SELECT l.idLibro, l.titulo, l.precio, l.sinopsis
+        FROM Libro l JOIN LibroGenero lg ON l.idLibro = lg.id_libro
+        JOIN Genero g ON lg.id_genero = g.idGenero
+        WHERE l.cantidad_disponible > 0 AND g.idGenero = %s"""
     values = (genero_id,)
     cursor.execute(query, values)
     libros = cursor.fetchall()
@@ -261,7 +284,7 @@ def buscar_genero(genero_id: int):
     genero = cursor.fetchone()
     cursor.close()
     db.close()
-    genero = genero[0].encode("latin1").decode("utf-8")
+    genero = genero[0]
     return render_template(
         "libro/libros-categoria.html",
         libros=libros,
@@ -333,7 +356,7 @@ def cargar_autores() -> None:
 
     for valor, autor in autores_cursor:
         id_autores.append(valor)
-        autores.append(autor.encode("latin1").decode("utf-8"))
+        autores.append(autor)
 
 
 def cargar_editoriales() -> None:
@@ -346,7 +369,7 @@ def cargar_editoriales() -> None:
 
     for valor, editorial in editoriales_cursor:
         id_editoriales.append(valor)
-        editoriales.append(editorial.encode("latin1").decode("utf-8"))
+        editoriales.append(editorial)
 
 
 def cargar_presentaciones() -> None:
@@ -359,14 +382,17 @@ def cargar_presentaciones() -> None:
 
     for valor, presentacion in presentaciones_cursor:
         id_presentaciones.append(valor)
-        presentaciones.append(presentacion.encode("latin1").decode("utf-8"))
+        presentaciones.append(presentacion)
 
 
 def cargar_generos() -> list[str]:
     db = get_db_connection()
     cursor = db.cursor(buffered=True)
     cursor.execute(
-        """SELECT DISTINCT Genero.idGenero, Genero.nombre FROM Genero JOIN LibroGenero ON Genero.idGenero = LibroGenero.id_genero JOIN Libro ON LibroGenero.id_libro = Libro.idLibro WHERE Libro.cantidad_disponible > 0"""
+        """SELECT DISTINCT Genero.idGenero, Genero.nombre
+        FROM Genero JOIN LibroGenero ON Genero.idGenero = LibroGenero.id_genero
+        JOIN Libro ON LibroGenero.id_libro = Libro.idLibro
+        WHERE Libro.cantidad_disponible > 0"""
     )
     generos_cursor = cursor.fetchall()
     cursor.close()
@@ -383,4 +409,4 @@ def cargar_todos_generos():
     db.close()
     for valor, genero in generos_cursor:
         id_todos_generos.append(valor)
-        todos_generos.append(genero.encode("latin1").decode("utf-8"))
+        todos_generos.append(genero)

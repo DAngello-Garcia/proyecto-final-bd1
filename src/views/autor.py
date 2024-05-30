@@ -15,10 +15,14 @@ id_autores: list[str] = []
 def crear():
     nombre = request.form["nombre"]
     apellido = request.form["apellido"]
+    biografia = request.form["biografia"]
+    id_pais = request.form["id_pais"]
     fecha_nacimiento = request.form["fecha_nacimiento"]
     if request.form["fecha_defuncion"] is not "":
         fecha_defuncion = request.form["fecha_defuncion"]
-        query = """INSERT INTO Autor (nombre, apellido, fecha_nacimiento, fecha_defuncion, biografia, id_pais) VALUES (%s, %s, %s, %s, %s, %s)"""
+        query = """INSERT INTO Autor
+            (nombre, apellido, fecha_nacimiento, fecha_defuncion, biografia, id_pais)
+            VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (
             nombre,
             apellido,
@@ -27,10 +31,10 @@ def crear():
             biografia,
             id_pais,
         )
-    biografia = request.form["biografia"]
-    id_pais = request.form["id_pais"]
 
-    query = """INSERT INTO Autor (nombre, apellido, fecha_nacimiento, biografia, id_pais) VALUES (%s, %s, %s, %s, %s)"""
+    query = """INSERT INTO Autor
+        (nombre, apellido, fecha_nacimiento, biografia, id_pais)
+        VALUES (%s, %s, %s, %s, %s)"""
     values = (
         nombre,
         apellido,
@@ -73,7 +77,9 @@ def gestion_autor(autor_id: int):
     )
 
     cursor = db.cursor(buffered=True)
-    query = """SELECT a.idAutor, a.nombre, a.apellido, a.fecha_nacimiento, a.fecha_defuncion, a.biografia, p.nombre FROM Autor a JOIN Pais p ON a.id_pais = p.idPais WHERE idAutor = %s"""
+    query = """SELECT a.idAutor, a.nombre, a.apellido, a.fecha_nacimiento, a.fecha_defuncion, a.biografia, p.nombre
+        FROM Autor a JOIN Pais p ON a.id_pais = p.idPais
+        WHERE idAutor = %s"""
     values = (autor_id,)
     cursor.execute(query, values)
     autor = cursor.fetchone()
@@ -96,7 +102,10 @@ def actualizar(id_autor: int):
     biografia = request.form["biografia"]
     id_pais = request.form["id_pais"]
 
-    query = """UPDATE Autor SET nombre = %s, apellido = %s, fecha_nacimiento = %s, fecha_defuncion = %s, biografia = %s, id_pais = %s WHERE idAutor = %s"""
+    query = """UPDATE Autor
+        SET nombre = %s, apellido = %s, fecha_nacimiento = %s,
+        fecha_defuncion = %s, biografia = %s, id_pais = %s
+        WHERE idAutor = %s"""
     values = (
         nombre,
         apellido,

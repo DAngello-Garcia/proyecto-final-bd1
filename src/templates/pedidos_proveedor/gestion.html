@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="card-body">
+                    <p class="card-text"><strong>Nombre:</strong> {{ proveedor[1] }}</p>
+                    <p class="card-text"><strong>Teléfono:</strong> {{ proveedor[2] }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ proveedor[3] }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="border border-primary-subtle">
+<div class="container">
+    {% for libro in libros %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ libro[1] }}</a>
+            </h5>
+            <p class="card-text">Cantidad disponible: {{ libro[3] }}</p>
+            <p class="card-text"><small class="text-muted">${{ (libro[2]|float * 0.7)|round(2) }}</small></p>
+            <input hidden type="text" name="prov_{{ proveedor[1] }}">
+            <a class="btn btn-outline-success"
+                href="{{ url_for('pedido_proveedor.pedir', libro_id=libro[0], proveedor_id=proveedor[0]) }}">Pedir</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

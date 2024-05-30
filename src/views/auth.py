@@ -28,7 +28,9 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        query = """SELECT idCliente, password FROM Cliente WHERE email = %s"""
+        query = """SELECT idCliente, password
+            FROM Cliente
+            WHERE email = %s"""
         db = get_db_connection()
         cursor = db.cursor()
         cursor.execute(query, (email,))
@@ -58,7 +60,9 @@ def login_empleado():
         email = request.form["email"]
         password = request.form["password"]
 
-        query = """SELECT password, idEmpleado FROM Empleado WHERE email = %s"""
+        query = """SELECT password, idEmpleado
+            FROM Empleado
+            WHERE email = %s"""
         db = get_db_connection()
         cursor = db.cursor()
         cursor.execute(query, (email,))
@@ -113,7 +117,9 @@ def registro():
         password = request.form["password"]
         hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
-        query = """INSERT INTO Cliente (nombre, apellido, fecha_nacimiento, direccion, telefono, id_ciudad, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        query = """INSERT INTO Cliente
+            (nombre, apellido, fecha_nacimiento, direccion, telefono, id_ciudad, username, email, password)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         values = (
             nombre,
             apellido,

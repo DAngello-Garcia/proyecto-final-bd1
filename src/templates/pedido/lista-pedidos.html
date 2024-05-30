@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for pedido in pedidos %}
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="card-body">
+                    <p class="card-title"><strong>Pedido:</strong> {{ pedido[0] }}</p>
+                    <p class="card-text"><strong>Fecha:</strong> {{ pedido[2] }}</p>
+                    <p class="card-text"><strong>Total:</strong> {{ pedido[1] }}</p>
+                    <p class="card-text"><strong>Estado:</strong> {{ pedido[3] }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="card-body">
+                    <form action="{{ url_for('pedido.gestion', id_pedido=pedido[0]) }}" method="GET">
+                        <button type="submit" class="btn btn-outline-primary">Gestionar
+                            pedido</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="border border-primary-subtle">
+    {% endfor %}
+</div>
+{% endblock %}

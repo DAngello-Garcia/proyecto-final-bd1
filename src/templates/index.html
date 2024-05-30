@@ -38,7 +38,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     {% for genero in generos %}
                     <a class="dropdown-item"
-                        href="{{ url_for('libro.buscar_genero', genero_id=genero[0]) }}">{{genero[1].encode("latin1").decode("utf-8")}}</a>
+                        href="{{ url_for('libro.buscar_genero', genero_id=genero[0]) }}">{{genero[1]}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -74,21 +74,6 @@
             </form>
         </div>
         {% if not session['cliente'] %}
-        <!-- <div class="col">
-            <form action="{{ url_for('libro.gestion') }}" method="GET">
-                <button type="submit" class="btn btn-success">Gestión de libros</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('genero.gestion') }}" method="GET">
-                <button type="submit" class="btn btn-success">Gestión de géneros</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('autor.gestion') }}" method="GET">
-                <button type="submit" class="btn btn-success">Gestión de autores</button>
-            </form>
-        </div> -->
         <div class="col">
             <div class="dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -100,12 +85,27 @@
                     <a class="dropdown-item" href="{{ url_for('libro.gestion') }}">Gestión de libros</a>
                     <a class="dropdown-item" href="{{ url_for('genero.gestion') }}">Gestión de géneros</a>
                     <a class="dropdown-item" href="{{ url_for('autor.gestion') }}">Gestión de autores</a>
+                    <a class="dropdown-item" href="{{ url_for('pedido.listar_pedidos') }}">Gestión de
+                        pedidos</a>
+                    <a class="dropdown-item" href="{{ url_for('pedido_proveedor.listar_pedidos') }}">Gestión de pedidos
+                        proveedor</a>
                 </div>
             </div>
         </div>
         <div class="col">
             <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
                 <button type="submit" class="btn btn-success">Perfil</button>
+            </form>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.lista') }}" method="GET">
+                <button type="submit" class="btn btn-success">Reportes</button>
+            </form>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('pedido_proveedor.carro', id_empleado=session['empleado']) }}" method="GET">
+                <button type="submit" class="btn" id="btn-carro"><i class="bi bi-cart"
+                        style="font-size: large;"></i></button>
             </form>
         </div>
         {% else %}

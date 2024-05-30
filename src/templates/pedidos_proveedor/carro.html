@@ -6,7 +6,8 @@
 
 {% block content %}
 <div class="container">
-    <form id="carritoForm" action="{{ url_for('pedido.pagar', id_cliente=session['cliente']) }}" method="POST">
+    <form id="carritoForm" action="{{ url_for('pedido_proveedor.pagar', id_empleado=session['empleado']) }}"
+        method="POST">
         {% for libro in libros %}
         <div class="row">
             <div class="col">
@@ -16,7 +17,7 @@
                         <p class="card-text"><strong>Autor:</strong> {{ libro[9] }} {{
                             libro[10] }}</p>
                         <p class="card-text"><strong>Editorial:</strong> {{ libro[2] }}</p>
-                        <p class="card-text"><strong>Precio:</strong> ${{ libro[3] }}</p>
+                        <p class="card-text"><strong>Precio:</strong> ${{ (libro[3]|float * 0.7)|round(2) }}</p>
                     </div>
                 </div>
             </div>

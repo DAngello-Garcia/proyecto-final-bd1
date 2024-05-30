@@ -8,6 +8,8 @@ from views.empleado import empleado
 from views.genero import genero
 from views.libro import cargar_generos, cargar_libros, libro_bp
 from views.pedido import pedido
+from views.pedido_proveedor import pedido_proveedor
+from views.reporte import reporte
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z]/'
@@ -19,6 +21,8 @@ app.register_blueprint(empleado)
 app.register_blueprint(autor)
 app.register_blueprint(genero)
 app.register_blueprint(pedido)
+app.register_blueprint(pedido_proveedor)
+app.register_blueprint(reporte)
 libros: list[str] = []
 generos: list[str] = []
 

@@ -27,7 +27,9 @@ def perfil(id_cliente: int):
     cargar_ciudades()
     db = get_db_connection()
     cursor = db.cursor()
-    query = "SELECT nombre, apellido, fecha_nacimiento, direccion, telefono, id_ciudad, username, email, idCliente FROM Cliente WHERE idCliente = %s"
+    query = """SELECT nombre, apellido, fecha_nacimiento, direccion,
+        telefono, id_ciudad, username, email, idCliente
+        FROM Cliente WHERE idCliente = %s"""
     values = (id_cliente,)
     cursor.execute(query, values)
     cliente = cursor.fetchone()
@@ -60,7 +62,10 @@ def editar(id_cliente: int):
     username = request.form["username"]
     email = request.form["email"]
 
-    query = """UPDATE Cliente SET nombre = %s, apellido = %s, fecha_nacimiento = %s, direccion = %s, telefono = %s, id_ciudad = %s, username = %s, email = %s WHERE idCliente = %s"""
+    query = """UPDATE Cliente
+        SET nombre = %s, apellido = %s, fecha_nacimiento = %s, direccion = %s,
+            telefono = %s, id_ciudad = %s, username = %s, email = %s
+            WHERE idCliente = %s"""
     values = (
         nombre,
         apellido,

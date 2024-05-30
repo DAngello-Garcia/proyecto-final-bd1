@@ -27,7 +27,11 @@ def perfil(id_empleado: int):
     cargar_ciudades()
     db = get_db_connection()
     cursor = db.cursor()
-    query = "SELECT e.nombre, e.apellido, e.fecha_nacimiento, e.direccion, e.telefono, e.id_ciudad, e.username, e.email, e.idEmpleado, e.fecha_contratacion, s.nombre, c.nombre, c.salario FROM Empleado e JOIN Sucursal s ON e.id_sucursal = s.idSucursal JOIN Cargo c ON e.id_cargo = c.idCargo WHERE idEmpleado = %s"
+    query = """SELECT e.nombre, e.apellido, e.fecha_nacimiento, e.direccion, e.telefono,
+        e.id_ciudad, e.username, e.email, e.idEmpleado, e.fecha_contratacion, s.nombre, c.nombre, c.salario
+        FROM Empleado e JOIN Sucursal s ON e.id_sucursal = s.idSucursal
+        JOIN Cargo c ON e.id_cargo = c.idCargo
+        WHERE idEmpleado = %s"""
     values = (id_empleado,)
     cursor.execute(query, values)
     empleado = cursor.fetchone()
@@ -60,7 +64,10 @@ def editar(id_empleado: int):
     username = request.form["username"]
     email = request.form["email"]
 
-    query = """UPDATE Empleado SET nombre = %s, apellido = %s, fecha_nacimiento = %s, direccion = %s, telefono = %s, id_ciudad = %s, username = %s, email = %s WHERE idEmpleado = %s"""
+    query = """UPDATE Empleado
+        SET nombre = %s, apellido = %s, fecha_nacimiento = %s, direccion = %s,
+            telefono = %s, id_ciudad = %s, username = %s, email = %s
+            WHERE idEmpleado = %s"""
     values = (
         nombre,
         apellido,

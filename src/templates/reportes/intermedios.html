@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Intermedios</h3>
+    <div class="row">
+        <div class="col">
+            <h5>Ventas por género literario</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.intermedios') }}?rep1={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_1 }}" alt="">
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Ganancias por libro por proveedor</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.intermedios') }}?rep2={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_2 }}" alt="">
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Autores que más han vendido</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.intermedios') }}?rep3={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_3 }}" alt="">
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Ventas por género literario por ciudad</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.intermedios') }}?rep4={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_4 }}" alt="">
+    </div>
+</div>
+<hr class="border border-primary-subtle">
+{% endblock %}

@@ -51,46 +51,275 @@ def simples():
     )
 
 
-@reporte.route("/reportes-intermedio")
+@reporte.route("/reportes-intermedio", methods=["GET", "POST"])
 def intermedios():
-    grafico_base64 = generar_grafico()
+    grafico_base64_1 = ""
+    grafico_base64_2 = ""
+    grafico_base64_3 = ""
+    grafico_base64_4 = ""
     reporte1 = ""
-    if request.args.get("rep1") is not None:
-        reporte1 = simple_1()
+    reporte2 = ""
+    reporte3 = ""
+    reporte4 = ""
+
+    if request.method == "POST":
+        if request.args.get("rep1") is not None:
+            reporte1 = intermedia_1()
+            grafico_base64_1 = generar_grafico_intermedia_1(reporte1)
+
+        if request.args.get("rep2") is not None:
+            reporte2 = intermedia_2()
+            grafico_base64_2 = generar_grafico_intermedia_2(reporte2)
+
+        if request.args.get("rep3") is not None:
+            reporte3 = intermedia_3()
+            grafico_base64_3 = generar_grafico_intermedia_3(reporte3)
+
+        if request.args.get("rep4") is not None:
+            reporte4 = intermedia_4()
+            grafico_base64_4 = generar_grafico_intermedia_4(reporte4)
+
     return render_template(
-        "reportes.html", grafico_base64=grafico_base64, reporte1=reporte1
+        "reportes/intermedios.html",
+        grafico_base64_1=grafico_base64_1,
+        grafico_base64_2=grafico_base64_2,
+        grafico_base64_3=grafico_base64_3,
+        grafico_base64_4=grafico_base64_4,
     )
 
 
-@reporte.route("/reportes-complejo")
+@reporte.route("/reportes-complejo", methods=["GET", "POST"])
 def complejos():
-    grafico_base64 = generar_grafico()
+    grafico_base64_1 = ""
+    grafico_base64_2 = ""
+    grafico_base64_3 = ""
     reporte1 = ""
-    if request.args.get("rep1") is not None:
-        reporte1 = simple_1()
+    reporte2 = ""
+    reporte3 = ""
+
+    if request.method == "POST":
+        if request.args.get("rep1") is not None:
+            reporte1 = complejo_1()
+            grafico_base64_1 = generar_grafico_complejo_1(reporte1)
+
+        if request.args.get("rep2") is not None:
+            reporte2 = complejo_2()
+            grafico_base64_2 = generar_grafico_complejo_2(reporte2)
+
+        if request.args.get("rep3") is not None:
+            reporte3 = complejo_3()
+            grafico_base64_3 = generar_grafico_complejo_3(reporte3)
+
     return render_template(
-        "reportes.html", grafico_base64=grafico_base64, reporte1=reporte1
+        "reportes/complejos.html",
+        grafico_base64_1=grafico_base64_1,
+        grafico_base64_2=grafico_base64_2,
+        grafico_base64_3=grafico_base64_3,
     )
 
 
-def generar_grafico():
-    x = np.arange(0, 10, 0.1)
-    y = np.sin(x)
+def generar_grafico_intermedia_1(resultados):
+    generos = [fila[0] for fila in resultados]
+    ventas = [fila[1] for fila in resultados]
 
-    # Cambiar el backend de Matplotlib a 'Agg' (sin GUI)
     plt.switch_backend("agg")
 
-    plt.plot(x, y)
-    plt.xlabel("x")
-    plt.ylabel("y")
-    plt.title("Gráfico de ejemplo")
+    plt.figure(figsize=(8, 8))
+    plt.pie(ventas, labels=generos, autopct="%1.1f%%", startangle=140)
+    plt.title("Ventas por género literario")
 
-    # Guardar el gráfico como un archivo de imagen en memoria
     img = BytesIO()
     plt.savefig(img, format="png")
     img.seek(0)
 
-    # Codificar el gráfico en base64 para incrustarlo en la plantilla HTML
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_intermedia_2(resultados):
+    proveedores = {}
+    for fila in resultados:
+        proveedor = fila[1]
+        libro = fila[0]
+        ganancia = fila[2]
+        if proveedor not in proveedores:
+            proveedores[proveedor] = {}
+        if libro not in proveedores[proveedor]:
+            proveedores[proveedor][libro] = 0
+        proveedores[proveedor][libro] += ganancia
+
+    plt.switch_backend("agg")
+
+    plt.figure(figsize=(10, 6))
+    for i, (proveedor, datos) in enumerate(proveedores.items()):
+        libros = list(datos.keys())
+        ganancias = list(datos.values())
+        plt.bar(libros, ganancias, label=proveedor, color=f"C{i}", alpha=0.6)
+
+    plt.xlabel("Libro")
+    plt.ylabel("Ganancia en $")
+    plt.title("Ganancia por Libro y Proveedor en $")
+    plt.xticks(rotation=45, ha="right")
+    plt.legend()
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_intermedia_3(resultados):
+    autores = [f"{fila[0]} {fila[1]}" for fila in resultados]
+    total_ventas = [fila[2] for fila in resultados]
+
+    plt.figure(figsize=(10, 6))
+    plt.barh(autores, total_ventas, color="skyblue")
+    plt.xlabel("Total de Ventas en $")
+    plt.ylabel("Autor")
+    plt.title("Total de Ventas por Autor en $")
+    plt.gca().invert_yaxis()
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_intermedia_4(resultados):
+    ciudades = {}
+    for fila in resultados:
+        ciudad = fila[0]
+        genero = fila[1]
+        ventas = fila[2]
+        if ciudad not in ciudades:
+            ciudades[ciudad] = {}
+        ciudades[ciudad][genero] = ventas
+
+    generos = set(genero for ciudad in ciudades.values() for genero in ciudad.keys())
+
+    datos_por_ciudad = {
+        ciudad: [ciudad_data.get(genero, 0) for genero in generos]
+        for ciudad, ciudad_data in ciudades.items()
+    }
+
+    plt.switch_backend("agg")
+
+    plt.figure(figsize=(12, 8))
+    bar_width = 0.35
+    indice = range(len(generos))
+    for i, (ciudad, datos) in enumerate(datos_por_ciudad.items()):
+        plt.bar([x + bar_width * i for x in indice], datos, bar_width, label=ciudad)
+
+    plt.xlabel("Género")
+    plt.ylabel("Ventas en $")
+    plt.title("Ventas por Ciudad y Género en $")
+    plt.xticks(
+        [x + bar_width * (len(ciudades) / 2 - 0.5) for x in indice],
+        generos,
+        rotation=45,
+    )
+    plt.legend()
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_complejo_1(resultados):
+    sucursales = [fila[0] for fila in resultados]
+    promedio_ventas = [fila[1] for fila in resultados]
+
+    plt.switch_backend("agg")
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(sucursales, promedio_ventas, color="skyblue")
+    plt.xlabel("Sucursal")
+    plt.ylabel("Promedio de Ventas")
+    plt.title("Promedio de Ventas por Sucursal (Último Mes)")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_complejo_2(resultados):
+    libros = [fila[0] for fila in resultados]
+    total_vendido = [fila[1] for fila in resultados]
+
+    plt.switch_backend("agg")
+
+    plt.figure(figsize=(10, 6))
+    plt.barh(libros, total_vendido, color="skyblue")
+    plt.xlabel("Total Vendido")
+    plt.ylabel("Libro")
+    plt.title("Libros con Cantidad Vendida Superior al Promedio")
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
+
+
+def generar_grafico_complejo_3(resultados):
+    editoriales = {}
+    for fila in resultados:
+        editorial = fila[0]
+        libro = fila[1]
+        stock = fila[2]
+        promedio_stock_editorial = fila[3]
+        if editorial not in editoriales:
+            editoriales[editorial] = {
+                "libros": [],
+                "promedio_stock": promedio_stock_editorial,
+            }
+        editoriales[editorial]["libros"].append((libro, stock))
+
+    plt.switch_backend("agg")
+
+    plt.figure(figsize=(12, 8))
+    bar_width = 0.35
+    indice = range(len(editoriales))
+    for i, (editorial, data) in enumerate(editoriales.items()):
+        libros_nombres = [libro[0] for libro in data["libros"]]
+        stocks = [libro[1] for libro in data["libros"]]
+        promedio_stock = data["promedio_stock"]
+        plt.bar([x + bar_width * i for x in indice], stocks, bar_width, label=editorial)
+        plt.axhline(y=promedio_stock, color="red", linestyle="--", label="Promedio")
+
+    plt.xlabel("Libro")
+    plt.ylabel("Stock")
+    plt.title("Libros con Stock Inferior al Promedio por Editorial")
+    plt.xticks(
+        [x + bar_width * (len(editoriales) / 2 - 0.5) for x in indice],
+        libros_nombres,
+        rotation=45,
+        ha="right",
+    )
+    plt.legend()
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+
     img_base64 = base64.b64encode(img.getvalue()).decode()
     return img_base64
 
@@ -283,12 +512,13 @@ def complejo_2():
 
 def complejo_3():
     db = get_db_connection()
-    query = """SELECT e.nombre AS editorial, l.titulo AS libro, l.cantidad_disponible AS stock
+    query = """SELECT e.nombre AS editorial, l.titulo AS libro, l.cantidad_disponible AS stock, 
+        ROUND((SELECT AVG(cantidad_disponible) FROM Libro WHERE id_editorial = e.idEditorial ), 1) AS promedio_stock_editorial
         FROM Editorial e JOIN Libro l ON e.idEditorial = l.id_editorial
         WHERE l.cantidad_disponible < (SELECT AVG(cantidad_disponible)
-                FROM Libro
-                WHERE id_editorial = e.idEditorial
-                )
+                                        FROM Libro
+                                        WHERE id_editorial = e.idEditorial
+                                    )
         ORDER BY e.nombre, l.cantidad_disponible"""
     cursor = db.cursor(buffered=True)
     cursor.execute(query)

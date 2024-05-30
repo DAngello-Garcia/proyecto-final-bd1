@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Complejos</h3>
+    <div class="row">
+        <div class="col">
+            <h5>Promedio de Ventas por Sucursal en el Último Mes</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.complejos') }}?rep1={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_1 }}" alt="">
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Libros con Ventas Superior al Promedio</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.complejos') }}?rep2={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_2 }}" alt="">
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Libros con Stock Inferior al Promedio por Editorial</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.complejos') }}?rep3={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <img src="data:image/png;base64,{{ grafico_base64_3 }}" alt="">
+    </div>
+</div>
+
+</div>
+<hr class="border border-primary-subtle">
+{% endblock %}

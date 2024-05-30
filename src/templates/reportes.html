@@ -7,73 +7,22 @@
 {% block content %}
 <div class="container">
     <h2>Reportes</h2>
-    <br>
-    <h5>Simples</h5>
     <div class="row">
         <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
+            <form action="{{ url_for('reporte.simples') }}" method="GET">
+                <button type="submit" class="btn btn-success">Simples</button>
             </form>
         </div>
         <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
+            <form action="{{ url_for('reporte.intermedios') }}" method="GET">
+                <button type="submit" class="btn btn-success">Intermedios</button>
             </form>
         </div>
         <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
+            <form action="{{ url_for('reporte.complejos') }}" method="GET">
+                <button type="submit" class="btn btn-success">Complejos</button>
             </form>
         </div>
     </div>
-    <hr class="border border-primary-subtle">
-    <h5>Intermedios</h5>
-    <div class="row">
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-    </div>
-    <hr class="border border-primary-subtle">
-    <h5>Complejos</h5>
-    <div class="row">
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-        <div class="col">
-            <form action="{{ url_for('empleado.perfil', id_empleado=session['empleado']) }}" method="GET">
-                <button type="submit" class="btn btn-success">Perfil</button>
-            </form>
-        </div>
-    </div>
-
-    <img src="data:image/png;base64,{{ grafico_base64 }}" alt="Gráfico">
-
 </div>
 {% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Simples</h3>
+    <div class="row">
+        <div class="col">
+            <h5>Listado de clientes por edad, ciudad, departamento y país</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.simples') }}?rep1={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div id="tabla" style="display: none;">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Edad</th>
+                        <th>Ciudad</th>
+                        <th>Departamento</th>
+                        <th>País</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reporte1 %}
+                    <tr>
+                        <td>{{ reporte[0]}}</td>
+                        <td>{{ reporte[1]}}</td>
+                        <td>{{ reporte[5]}}</td>
+                        <td>{{ reporte[2]}}</td>
+                        <td>{{ reporte[3]}}</td>
+                        <td>{{ reporte[4]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Listado de pedidos realizados en un rango de fechas</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.simples')}}?rep2={{ 1 }}" method="POST">
+                <div class="col">
+                    <label for="fechaInicio">Fecha inicio:</label>
+                    <input type="date" name="fechaInicio" id="fechaInicio">
+                </div>
+                <div class="col">
+                    <label for="fechaFin">Fecha fin:</label>
+                    <input type="date" name="fechaFin" id="fechaFin">
+                </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success">Ver reporte</button>
+        </div>
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div id="tabla2" style="display: none;">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>idPedido</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reporte2 %}
+                    <tr>
+                        <td>{{ reporte[0]}}</td>
+                        <td>{{ reporte[1]}}</td>
+                        <td>{{ reporte[2]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="border border-primary-subtle">
+    <div class="row">
+        <div class="col">
+            <h5>Listado de empleados y sus sueldos</h5>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('reporte.simples')}}?rep3={{ 1 }}" method="POST">
+                <button type="submit" class="btn btn-success">Ver reporte</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div id="tabla3" style="display: none;">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cargo</th>
+                        <th>Salario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reporte3 %}
+                    <tr>
+                        <td>{{ reporte[0]}}</td>
+                        <td>{{ reporte[1]}}</td>
+                        <td>{{ reporte[2]}}</td>
+                        <td>{{ reporte[3]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var divVisible = {{ div_visible | tojson
+    }};
+    var clientesDiv = document.getElementById('tabla');
+    if (divVisible) {
+        clientesDiv.style.display = 'block';
+    } else {
+        clientesDiv.style.display = 'none';
+    }
+    var divVisible2 = {{ div_visible2 | tojson
+    }};
+    var clientesDiv2 = document.getElementById('tabla2');
+    if (divVisible2) {
+        clientesDiv2.style.display = 'block';
+    } else {
+        clientesDiv2.style.display = 'none';
+    }
+    var divVisible3 = {{ div_visible3 | tojson
+    }};
+    var clientesDiv3 = document.getElementById('tabla3');
+    if (divVisible3) {
+        clientesDiv3.style.display = 'block';
+    } else {
+        clientesDiv3.style.display = 'none';
+    }
+    });
+</script>
+{% endblock %}

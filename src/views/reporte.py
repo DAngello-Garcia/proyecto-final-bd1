@@ -12,10 +12,65 @@ reporte = Blueprint("reporte", __name__)
 
 @reporte.route("/reportes")
 def lista():
-    grafico_base64 = generar_grafico()
+    return render_template("reportes.html")
 
-    # Renderizar la plantilla HTML y pasar el gráfico como contexto
-    return render_template("reportes.html", grafico_base64=grafico_base64)
+
+@reporte.route("/reportes-simple", methods=["GET", "POST"])
+def simples():
+    grafico_base64 = generar_grafico()
+    reporte1 = ""
+    reporte2 = ""
+    reporte3 = ""
+    div_visible = False
+    div_visible2 = False
+    div_visible3 = False
+    if request.method == "POST":
+        if request.args.get("rep1") is not None:
+            reporte1 = simple_1()
+            div_visible = True
+
+        if request.args.get("rep2") is not None:
+            fechaInicio = request.form["fechaInicio"]
+            fechaFin = request.form["fechaFin"]
+            reporte2 = simple_2(fechaInicio, fechaFin)
+            div_visible2 = True
+
+        if request.args.get("rep3") is not None:
+            reporte3 = simple_3()
+            div_visible3 = True
+
+    return render_template(
+        "reportes/simples.html",
+        grafico_base64=grafico_base64,
+        reporte1=reporte1,
+        reporte2=reporte2,
+        reporte3=reporte3,
+        div_visible=div_visible,
+        div_visible2=div_visible2,
+        div_visible3=div_visible3,
+    )
+
+
+@reporte.route("/reportes-intermedio")
+def intermedios():
+    grafico_base64 = generar_grafico()
+    reporte1 = ""
+    if request.args.get("rep1") is not None:
+        reporte1 = simple_1()
+    return render_template(
+        "reportes.html", grafico_base64=grafico_base64, reporte1=reporte1
+    )
+
+
+@reporte.route("/reportes-complejo")
+def complejos():
+    grafico_base64 = generar_grafico()
+    reporte1 = ""
+    if request.args.get("rep1") is not None:
+        reporte1 = simple_1()
+    return render_template(
+        "reportes.html", grafico_base64=grafico_base64, reporte1=reporte1
+    )
 
 
 def generar_grafico():
@@ -69,8 +124,8 @@ def descargar_reporte_pdf():
 
 def simple_1():
     db = get_db_connection()
-    query = """SELECT c.nombre, c.apellido, c.fecha_nacimiento,
-        ci.nombre AS ciudad, d.nombre AS departamento, p.nombre AS pais,
+    query = """SELECT c.nombre, c.apellido, ci.nombre AS ciudad,
+        d.nombre AS departamento, p.nombre AS pais,
         ROUND(DATEDIFF(CURRENT_DATE(), c.fecha_nacimiento) / 365, 1) AS edad
         FROM Cliente c JOIN Ciudad ci ON c.id_ciudad = ci.idCiudad 
         JOIN Departamento d ON ci.id_dpto = d.idDepartamento

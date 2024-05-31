@@ -560,7 +560,7 @@ VALUES (
     'Platón fue un filósofo griego que fue discípulo de Sócrates y maestro de Aristóteles. Fundó la Academia de Atenas, la primera institución de educación superior del mundo occidental. Es conocido por sus diálogos filosóficos y por sus ideas sobre la teoría de las formas y la justicia.',
     4
   ),
-(
+  (
     'George',
     'Orwell',
     '1903-06-25',
@@ -572,7 +572,7 @@ VALUES (
     'Patrick',
     'Süskind',
     '1949-03-26',
-    '',
+    '1950-01-21',
     'Patrick Süskind es un escritor y guionista alemán, conocido por su novela "El Perfume". También ha escrito obras de teatro y guiones para películas y series de televisión.',
     6
   ),
@@ -735,12 +735,3 @@ INSERT INTO `libreria`.`PedidosProveedor` (
     `id_estado`
   )
 VALUES (1, '2024-04-28 10:00:00', 538.91, 1, 1);
--- Inserción de datos en la tabla PedidosProveedor
-INSERT INTO `libreria`.`DetallePedidosProveedor` (
-    `id_pedidoProveedor`,
-    `id_libro`,
-    `cantidad`,
-    `precio_unitario` `subtotal`
-  )
-VALUES (1, 1, 9, 25.99, 233.91),
-  (1, 2, 10, 30.50, 305.00);

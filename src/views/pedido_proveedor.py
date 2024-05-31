@@ -146,8 +146,6 @@ def listar_pedidos():
     proveedores = cursor.fetchall()
     cursor.close()
     db.close()
-    print(f"pedidos: {pedidos}")
-    print(f"proveedores: {proveedores}")
     return render_template(
         "pedidos_proveedor/lista-pedidos.html", pedidos=pedidos, proveedores=proveedores
     )

@@ -361,7 +361,10 @@ INSERT INTO `libreria`.`Pais` (`nombre`)
 VALUES ('Argentina'),
   ('España'),
   ('México'),
-  ('Grecia');
+  ('Grecia'),
+  ('Inglaterra'),
+  ('Alemania'),
+  ('Estados Unidos');
 -- Inserción de datos en la tabla Departamento
 INSERT INTO `libreria`.`Departamento` (`nombre`, `id_pais`)
 VALUES ('Buenos Aires', 1),
@@ -484,6 +487,45 @@ VALUES (
     'Español',
     1,
     1
+  ),
+  (
+    '1984',
+    9780451524935,
+    1949,
+    1,
+    23.75,
+    120,
+    '1984 presenta una sociedad totalitaria donde el gobierno controla todos los aspectos de la vida de sus ciudadanos.',
+    320,
+    'Inglés',
+    1.8,
+    2
+  ),
+  (
+    'El Perfume',
+    9780345809680,
+    1985,
+    2,
+    27.40,
+    90,
+    'El Perfume narra la historia de Jean-Baptiste Grenouille, un joven con un sentido del olfato extraordinario que busca crear el perfume perfecto.',
+    368,
+    'Español',
+    1.3,
+    1
+  ),
+  (
+    'Matar un ruiseñor',
+    9780061120084,
+    1960,
+    1,
+    29.85,
+    70,
+    'Matar un ruiseñor es una novela que aborda temas de injusticia racial y moralidad a través de los ojos de una niña en el sur de los Estados Unidos durante la década de 1930.',
+    384,
+    'Inglés',
+    1.2,
+    2
   );
 -- Inserción de datos en la tabla Autor
 INSERT INTO `libreria`.`Autor` (
@@ -517,6 +559,30 @@ VALUES (
     '348-01-01',
     'Platón fue un filósofo griego que fue discípulo de Sócrates y maestro de Aristóteles. Fundó la Academia de Atenas, la primera institución de educación superior del mundo occidental. Es conocido por sus diálogos filosóficos y por sus ideas sobre la teoría de las formas y la justicia.',
     4
+  ),
+(
+    'George',
+    'Orwell',
+    '1903-06-25',
+    '1950-01-21',
+    'George Orwell fue un escritor y periodista inglés, conocido por obras como "1984" y "Rebelión en la granja". Su trabajo suele abordar temas de injusticia social y totalitarismo.',
+    5
+  ),
+  (
+    'Patrick',
+    'Süskind',
+    '1949-03-26',
+    '',
+    'Patrick Süskind es un escritor y guionista alemán, conocido por su novela "El Perfume". También ha escrito obras de teatro y guiones para películas y series de televisión.',
+    6
+  ),
+  (
+    'Harper',
+    'Lee',
+    '1926-04-28',
+    '2016-02-19',
+    'Harper Lee fue una escritora estadounidense, conocida por su novela "Matar un ruiseñor", la cual ganó el Premio Pulitzer en 1961. Es considerada una de las grandes novelistas del siglo XX.',
+    7
   );
 -- Inserción de datos en la tabla Cargo
 INSERT INTO `libreria`.`Cargo` (`nombre`, `salario`)
@@ -590,7 +656,10 @@ VALUES (
 INSERT INTO `libreria`.`AutorLibro` (`id_libro`, `id_autor`)
 VALUES (1, 1),
   (2, 2),
-  (3, 3);
+  (3, 3),
+  (4, 4),
+  (5, 5),
+  (6, 6);
 -- Inserción de datos en la tabla Genero
 INSERT INTO `libreria`.`Genero` (`nombre`)
 VALUES ('Filosofía'),
@@ -606,11 +675,17 @@ VALUES ('Tarjeta de crédito'),
 INSERT INTO `libreria`.`LibroGenero` (`id_libro`, `id_genero`)
 VALUES (1, 2),
   (2, 2),
-  (3, 1);
+  (3, 1),
+  (4, 1),
+  (5, 2),
+  (6, 1);
 INSERT INTO `libreria`.`LibroPresentacion` (`id_libro`, `id_presentacion`)
 VALUES (1, 2),
   (2, 2),
-  (3, 1);
+  (3, 1),
+  (4, 2),
+  (5, 1),
+  (6, 2);
 -- Inserción de datos en la tabla EstadoPedido
 INSERT INTO `libreria`.`EstadoPedido` (`estado`)
 VALUES ('En proceso'),
@@ -646,12 +721,26 @@ INSERT INTO `libreria`.`LibroProveedor` (`id_proveedor`, `id_libro`)
 VALUES (1, 1),
   (1, 2),
   (2, 2),
-  (2, 3);
+  (2, 3),
+  (1, 4),
+  (1, 5),
+  (2, 5),
+  (1, 6);
 -- Inserción de datos en la tabla PedidosProveedor
 INSERT INTO `libreria`.`PedidosProveedor` (
     `id_sucursal`,
     `fecha`,
     `total`,
-    `id_proveedor`
+    `id_proveedor`,
+    `id_estado`
   )
-VALUES (1, '2024-04-28 10:00:00', 500.00, 1);
+VALUES (1, '2024-04-28 10:00:00', 538.91, 1, 1);
+-- Inserción de datos en la tabla PedidosProveedor
+INSERT INTO `libreria`.`DetallePedidosProveedor` (
+    `id_pedidoProveedor`,
+    `id_libro`,
+    `cantidad`,
+    `precio_unitario` `subtotal`
+  )
+VALUES (1, 1, 9, 25.99, 233.91),
+  (1, 2, 10, 30.50, 305.00);
